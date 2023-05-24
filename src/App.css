@@ -1,6 +1,52 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+	--black: #2b2b2b;
+	--blue: #175bc0;
+}
+h1 {
+	font-size: 2.3em;
+	font-weight: 600;
+	line-height: 1.1;
+}
+button {
+	cursor: pointer;
+	max-width: 158px;
+	height: 48px;
+	margin-top: 19px;
+	padding: 0.6em 1.2em;
+	border-radius: 24px;
+	border: none;
+	background-color: white;
+	color: var(--blue);
+	font-weight: 700;
+	font-size: 12px;
+}
+button:hover {
+	outline: 3px solid var(--blue);
+}
+button:focus,
+button:focus-visible {
+	outline: 2px solid var(--blue);
+}
+
+button:active {
+	box-shadow: 0 0 3px 3px var(--blue);
+}
+.fullscreen {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.bg-dna {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 50px;
+}
+.welcome {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 10px;
 }
