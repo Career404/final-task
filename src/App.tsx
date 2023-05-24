@@ -1,13 +1,9 @@
-import "./App.css"
+import './App.css';
 
-import { Fragment } from "react"
-
-const App = () => {
-  return (
-    <Fragment>
-      <h1>{"Your final task"}</h1>
-    </Fragment>
-  )
+export default function App() {
+	return (
+		<>
+			<h1>{'Your final task'}</h1>
+		</>
+	);
 }
-
-export default App
