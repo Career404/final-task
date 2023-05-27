@@ -1,7 +1,7 @@
 import { createContext, ReactElement, useContext, useMemo } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 
-export interface User {
+interface User {
 	email: string;
 	password: string;
 }
@@ -16,15 +16,12 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactElement }) => {
 	const [user, setUser] = useLocalStorage('user', null);
-
 	const login = async (data: any) => {
 		setUser(data);
 	};
-
 	const logout = () => {
 		setUser(null);
 	};
-
 	const value = useMemo(
 		() => ({
 			user,
@@ -33,7 +30,6 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
 		}),
 		[user]
 	);
-
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

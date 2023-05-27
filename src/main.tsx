@@ -25,27 +25,16 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/">
 			<Route index element={<Navigate to="/search" />} />
-			<Route path="welcome" element={<Welcome />}>
+			<Route
+				path="welcome"
+				element={
+					<ProtectedRoute allowAccessTo="unregistered">
+						<Welcome />
+					</ProtectedRoute>
+				}
+			>
 				<Route index element={<Intro />} />
-				<Route
-					path="login"
-					element={<Login />}
-					action={async ({ request }) => {
-						let data = await request.formData();
-						const email = data.get('email');
-						const password = data.get('password');
-						if (email && password) {
-							localStorage.setItem(
-								'user',
-								JSON.stringify({
-									email,
-									password,
-								})
-							);
-						}
-						return redirect('/search');
-					}}
-				/>
+				<Route path="login" element={<Login />} />
 				<Route path="signup" element={<SignUp />} />
 				<Route path="*" element={<Navigate to={'/welcome'} />} />
 			</Route>

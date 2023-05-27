@@ -1,12 +1,27 @@
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'src/utils/hooks/useAuth';
+
 export default function Header(/* { padded = false, padding = 48 } */) {
+	const { user, logout } = useAuth();
+	console.log('head:', user);
+	const navigate = useNavigate();
 	return (
 		<>
 			{/*
 			{padded && <div className="pad mb-[48px]"></div>} */}
 			<div className="fixed top-0 w-full px-[10%] border-b-2 border-slate-200 bg-white bg-opacity-70 backdrop-blur-sm">
 				<div className="flex items-center justify-end gap-12 h-[48px] text-[12px]">
-					<div> Header</div>
-					<div>Log out</div>
+					<div>{user?.email.toString()}</div>
+					<div
+						className="cursor-pointer hover:scale-150 focus-visible:outline-black"
+						tabIndex={0}
+						onClick={() => {
+							logout();
+							navigate('/welcome');
+						}}
+					>
+						Log out
+					</div>
 				</div>
 			</div>
 		</>
