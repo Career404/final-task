@@ -1,3 +1,4 @@
+import { Form } from 'react-router-dom';
 import Header from 'src/components/header/Header';
 import SearchResults from 'src/components/searchResults/SearchResults';
 
@@ -9,7 +10,8 @@ Search Results */
 
 	return (
 		<>
-			<form className="flex items-center gap-4 pt-[78px] py-8 px-[10%]">
+			<Header />
+			<Form className="flex items-center gap-4 pt-[78px] py-8 px-[10%]">
 				<input
 					className="block flex-auto h-[48px] pl-4 rounded-xl border-2 border-slate-200"
 					type="text"
@@ -26,9 +28,8 @@ Search Results */
 				<button type="submit" className=" rounded-xl bg-blue-50 font-semibold">
 					Sort
 				</button>
-			</form>
+			</Form>
 			<SearchResults />
-			<Header />
 		</>
 	);
 }

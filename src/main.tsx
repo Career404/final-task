@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import { createRoutesFromElements, Route } from 'react-router-dom';
+
 import Welcome from './pages/welcome/Welcome';
 import Intro from './pages/welcome/Intro';
 import Login from './pages/welcome/Login';
@@ -17,39 +18,39 @@ import SignUp from './pages/welcome/SignUp';
 import NotFound from './pages/404/NotFound';
 import Header from './components/header/Header';
 import SearchPage from './pages/search/Search';
-
-const loggerLoader = () => {
-	let isLoggedIn = JSON.parse(sessionStorage.getItem('isLoggedIn')!);
-	if (!isLoggedIn) {
-		sessionStorage.setItem('isLoggedIn', 'false');
-		isLoggedIn = false;
-	}
-	return isLoggedIn ? null : redirect('welcome');
-};
+import { ProtectedRoute } from './utils/ProtectedRoute';
+import { AuthProvider } from './utils/hooks/useAuth';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/">
-			<Route index loader={loggerLoader} element={<Navigate to="search" />} />
-			<Route path="welcome" element={<Welcome />}>
-				<Route index element={<Intro />}></Route>
-				<Route
-					path="login"
-					element={<Login />}
-					action={() => {
-						sessionStorage.setItem('isLoggedIn', 'true');
-						return redirect('/search');
-					}}
-				></Route>
-				<Route path="signup" element={<SignUp />}></Route>
+			<Route index element={<Navigate to="/search" />} />
+			<Route
+				path="welcome"
+				element={
+					<ProtectedRoute allowAccessTo="unregistered">
+						<Welcome />
+					</ProtectedRoute>
+				}
+			>
+				<Route index element={<Intro />} />
+				<Route path="login" element={<Login />} />
+				<Route path="signup" element={<SignUp />} />
 				<Route path="*" element={<Navigate to={'/welcome'} />} />
 			</Route>
-			<Route path="search" element={<SearchPage />}></Route>
+			<Route
+				path="search"
+				element={
+					<ProtectedRoute>
+						<SearchPage />
+					</ProtectedRoute>
+				}
+			/>
 			<Route
 				path="not-found"
 				element={
 					<>
-						<Header />
+						<Header />3
 						<NotFound />
 					</>
 				}
@@ -61,6 +62,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.querySelector('#root') as HTMLElement).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<AuthProvider>
+			<RouterProvider router={router} />
+		</AuthProvider>
 	</React.StrictMode>
 );
