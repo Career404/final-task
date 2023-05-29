@@ -31,7 +31,7 @@ button {
 	font-weight: 600;
 }
 button:hover {
-	outline: 3px solid var(--blue);
+	outline: 2px solid var(--blue);
 }
 button:focus,
 button:focus-visible {
@@ -40,4 +40,8 @@ button:focus-visible {
 
 button:active {
 	box-shadow: 0 0 3px 3px var(--blue);
+}
+button:disabled {
+	background-color: #cfcfcf;
+	color: white;
 }

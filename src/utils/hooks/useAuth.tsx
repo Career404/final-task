@@ -1,5 +1,11 @@
+import {
+	signInWithEmailAndPassword,
+	createUserWithEmailAndPassword,
+	signOut,
+} from 'firebase/auth';
 import { createContext, ReactElement, useContext, useMemo } from 'react';
-import { useLocalStorage } from './useLocalStorage';
+import { AUTH } from '../firebase';
+import useLocalStorage from './useLocalStorage';
 
 interface User {
 	email: string;
@@ -8,23 +14,44 @@ interface User {
 
 interface AuthContextProps {
 	user: User | null;
-	login: (data: User) => void;
-	logout: () => void;
+	signup: (data: User) => Promise<unknown>;
+	login: (data: User) => Promise<unknown>;
+	logout: () => Promise<unknown>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactElement }) => {
-	const [user, setUser] = useLocalStorage('user', null);
-	const login = async (data: any) => {
-		setUser(data);
+	const [user, setUser] = useLocalStorage<User | null>('user', null);
+	const signup = async (data: User) => {
+		try {
+			await createUserWithEmailAndPassword(AUTH, data.email, data.password);
+			setUser(data);
+		} catch (err) {
+			throw JSON.stringify(err);
+		}
 	};
-	const logout = () => {
-		setUser(null);
+	const login = async (data: User) => {
+		try {
+			await signInWithEmailAndPassword(AUTH, data.email, data.password);
+			setUser(data);
+		} catch (err) {
+			throw JSON.stringify(err);
+		}
+	};
+
+	const logout = async () => {
+		try {
+			await signOut(AUTH);
+			setUser(null);
+		} catch (err) {
+			throw JSON.stringify(err);
+		}
 	};
 	const value = useMemo(
 		() => ({
 			user,
+			signup,
 			login,
 			logout,
 		}),
