@@ -1,13 +1,11 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from 'src/utils/hooks/useAuth';
+import { Outlet } from 'react-router-dom';
+import usePageTitle from 'src/utils/hooks/usePageTitle';
+
 import bgdna from '../../assets/bg.png';
 import './Welcome.css';
 
 export default function Welcome() {
-	const { user } = useAuth();
-	if (user) {
-		return <Navigate to="/search" />;
-	}
+	usePageTitle();
 	return (
 		<div
 			className="fullscreen"

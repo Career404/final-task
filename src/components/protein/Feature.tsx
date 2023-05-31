@@ -13,8 +13,8 @@ export default function Feature({ id }: { id: string }) {
 	}
 
 	return (
-		<>
+		<div className="pt-4">
 			<protvista-uniprot accession={id}></protvista-uniprot>
-		</>
+		</div>
 	);
 }
