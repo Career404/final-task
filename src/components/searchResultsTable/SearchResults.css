@@ -1,0 +1,21 @@
+table.results-table {
+	border-collapse: separate;
+	border-spacing: 22px;
+	table-layout: fixed;
+	width: 100%;
+}
+table.results-table th {
+	text-align: start;
+}
+table.results-table tr {
+	height: 24px;
+	overflow: hidden;
+}
+table.results-table th,
+table.results-table td {
+	height: 26px;
+	margin: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}

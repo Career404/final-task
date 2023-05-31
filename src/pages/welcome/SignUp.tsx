@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, Form, Link } from 'react-router-dom';
 import { useAuth } from 'src/utils/hooks/useAuth';
 
@@ -13,6 +13,7 @@ export default function SignUp() {
 
 	const navigate = useNavigate();
 	const { signup } = useAuth();
+	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		setPasswordsMatch(password === passwordRepeat);
@@ -22,10 +23,7 @@ export default function SignUp() {
 		setFormValid(isFormValid());
 	}, [email, password, passwordRepeat]);
 
-	const isFormValid = (): boolean => {
-		const form = document.querySelector('form');
-		return form ? form.checkValidity() : false;
-	};
+	const isFormValid = (): boolean => formRef.current!.checkValidity();
 	const handleSubmit = async () => {
 		signup({ email, password })
 			.then(() => navigate('/'))
@@ -36,14 +34,6 @@ export default function SignUp() {
 			});
 	};
 
-	//TOdo: controlled inputs, disabled y default button
-	/**
-if some of rules isn’t completed - app must show an error
-
-if one of the field is empty - “Sign Up“ button should be disabled
-
-on click “Login” link - app opens form to login
-	 */
 	return (
 		<div className="fullscreen flex justify-center items-center">
 			<div className="relative auth-card bg-white rounded-xl sm:w-[450px] w-4/5 p-6">
@@ -57,11 +47,15 @@ on click “Login” link - app opens form to login
 				{error && (
 					<p className="text-red-600 font-semibold">Error: {errorMessage}</p>
 				)}
-				<Form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+				<Form
+					className="flex flex-col gap-[20px]"
+					onSubmit={handleSubmit}
+					ref={formRef}
+				>
 					<label>
 						Email
 						<input
-							className={error ? 'border-red-600 border-2' : ''}
+							className={error ? 'border-red-600 border-2 ' : ''}
 							type="email"
 							name="email"
 							id="email"

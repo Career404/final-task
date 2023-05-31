@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom/client';
 import {
 	createBrowserRouter,
 	RouterProvider,
-	redirect,
 	Navigate,
 } from 'react-router-dom';
 
@@ -20,6 +19,7 @@ import Header from './components/header/Header';
 import SearchPage from './pages/search/Search';
 import { ProtectedRoute } from './utils/ProtectedRoute';
 import { AuthProvider } from './utils/hooks/useAuth';
+import searchLoader from './pages/loaders/searchLoader';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -40,9 +40,19 @@ const router = createBrowserRouter(
 			</Route>
 			<Route
 				path="search"
+				loader={searchLoader}
 				element={
 					<ProtectedRoute>
 						<SearchPage />
+					</ProtectedRoute>
+				}
+				errorElement={
+					<ProtectedRoute>
+						<Header />
+						<p className="h-[100vh] flex items-center justify-center text-4xl font-semibold">
+							There seems to be a problem... Sorry!
+							<br />
+						</p>
 					</ProtectedRoute>
 				}
 			/>
@@ -50,7 +60,7 @@ const router = createBrowserRouter(
 				path="not-found"
 				element={
 					<>
-						<Header />3
+						<Header />
 						<NotFound />
 					</>
 				}

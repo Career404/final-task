@@ -20,13 +20,15 @@ body {
 	height: auto;
 	min-height: 100vh;
 }
+#root {
+	min-height: 100vh;
+}
 
 button {
 	height: 48px;
 	padding: 0.6em 1.2em;
 	border: none;
 	border-radius: 8px;
-	background-color: white;
 	color: var(--blue);
 	font-weight: 600;
 }

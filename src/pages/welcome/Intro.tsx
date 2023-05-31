@@ -9,7 +9,7 @@ export default function Intro() {
 					Please login to search through UniProt database
 				</p>
 				<button
-					className="max-w-[158px] rounded-3xl font-semibold"
+					className="max-w-[158px] rounded-3xl bg-white font-semibold"
 					onClick={() => navigate('./login')}
 				>
 					Login
