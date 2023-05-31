@@ -6,6 +6,7 @@ import {
 	createBrowserRouter,
 	RouterProvider,
 	Navigate,
+	Outlet,
 } from 'react-router-dom';
 
 import { createRoutesFromElements, Route } from 'react-router-dom';
@@ -38,34 +39,39 @@ const router = createBrowserRouter(
 				<Route path="signup" element={<SignUp />} />
 				<Route path="*" element={<Navigate to={'/welcome'} />} />
 			</Route>
+
 			<Route
-				path="search"
-				loader={searchLoader}
 				element={
 					<ProtectedRoute>
-						<SearchPage />
+						<Outlet />
 					</ProtectedRoute>
 				}
-				errorElement={
-					<ProtectedRoute>
-						<Header />
-						<p className="h-[100vh] flex items-center justify-center text-4xl font-semibold">
-							There seems to be a problem... Sorry!
-							<br />
-						</p>
-					</ProtectedRoute>
-				}
-			/>
-			<Route
-				path="not-found"
-				element={
-					<>
-						<Header />
-						<NotFound />
-					</>
-				}
-			/>
-			<Route path="*" element={<Navigate to="not-found" />} />
+			>
+				<Route
+					path="search"
+					loader={searchLoader}
+					element={<SearchPage />}
+					errorElement={
+						<>
+							<Header />
+							<p className="h-[100vh] flex items-center justify-center text-4xl font-semibold">
+								There seems to be a problem... Sorry!
+								<br />
+							</p>
+						</>
+					}
+				/>
+				<Route
+					path="not-found"
+					element={
+						<>
+							<NotFound />
+							<Header />
+						</>
+					}
+				/>
+				<Route path="*" element={<Navigate to="not-found" />} />
+			</Route>
 		</Route>
 	)
 );
