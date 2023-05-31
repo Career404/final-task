@@ -7,6 +7,7 @@ import {
 	RouterProvider,
 	Navigate,
 	Outlet,
+	redirect,
 } from 'react-router-dom';
 
 import { createRoutesFromElements, Route } from 'react-router-dom';
@@ -21,6 +22,8 @@ import SearchPage from './pages/search/Search';
 import { ProtectedRoute } from './utils/ProtectedRoute';
 import { AuthProvider } from './utils/hooks/useAuth';
 import searchLoader from './pages/loaders/searchLoader';
+import { Protein } from './pages/protein/protein';
+import ProteinRedirectRoute from './utils/ProteinRedirectRoute';
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -60,7 +63,10 @@ const router = createBrowserRouter(
 							</p>
 						</>
 					}
-				/>
+				>
+					<Route path="protein/:id" element={<Protein />}></Route>
+				</Route>
+				<Route path="protein/:id" element={<ProteinRedirectRoute />} />
 				<Route
 					path="not-found"
 					element={
