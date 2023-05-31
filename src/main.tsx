@@ -60,8 +60,8 @@ const router = createBrowserRouter(
 				path="not-found"
 				element={
 					<>
-						<Header />
 						<NotFound />
+						<Header />
 					</>
 				}
 			/>
