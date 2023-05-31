@@ -13,7 +13,10 @@ interface User {
 }
 
 interface AuthContextProps {
-	user: User | null;
+	user: {
+		email: string | null;
+		token: string;
+	} | null;
 	signup: (data: User) => Promise<unknown>;
 	login: (data: User) => Promise<unknown>;
 	logout: () => Promise<unknown>;
@@ -22,19 +25,38 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactElement }) => {
-	const [user, setUser] = useLocalStorage<User | null>('user', null);
+	const [user, setUser] = useLocalStorage<{
+		email: string | null;
+		token: string;
+	} | null>('user', null);
 	const signup = async (data: User) => {
 		try {
-			await createUserWithEmailAndPassword(AUTH, data.email, data.password);
-			setUser(data);
+			const credentials = await createUserWithEmailAndPassword(
+				AUTH,
+				data.email,
+				data.password
+			);
+			const userData = {
+				email: credentials.user.email,
+				token: credentials.user.uid,
+			};
+			setUser(userData);
 		} catch (err) {
 			throw JSON.stringify(err);
 		}
 	};
 	const login = async (data: User) => {
 		try {
-			await signInWithEmailAndPassword(AUTH, data.email, data.password);
-			setUser(data);
+			const credentials = await signInWithEmailAndPassword(
+				AUTH,
+				data.email,
+				data.password
+			);
+			const userData = {
+				email: credentials.user.email,
+				token: credentials.user.uid,
+			};
+			setUser(userData);
 		} catch (err) {
 			throw JSON.stringify(err);
 		}
