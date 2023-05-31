@@ -1,23 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
-import { Form, useLoaderData } from 'react-router-dom';
+import { Form, Outlet, useLoaderData } from 'react-router-dom';
 import { getProteins } from 'src/api/uniprot';
 import Header from 'src/components/header/Header';
 import SearchResults from 'src/components/searchResultsTable/SearchResults';
+import usePageTitle from 'src/utils/hooks/usePageTitle';
 import { LoaderReturnType } from '../loaders/searchLoader';
 
 export default function SearchPage() {
-	const [searchValue, setSearchValue] = useState('');
+	const [searchValue, setSearchValue] = useState<string | null>(null);
 	const [resultArr, setResultArr] = useState<{ results: Protein[] } | null>(
 		null
 	);
 	const [totalResults, setTotalResults] = useState('0');
 	const [link, setLink] = useState<string | undefined>(undefined);
-	const [pageCounter, setPageCounter] = useState(0);
+	const [pageCounter, setPageCounter] = useState(1);
 
 	const [displayError, setDisplayError] = useState(false);
 	const [statusMessage, setStatusMessage] = useState('');
 	const [showFilters, setShowFilters] = useState(false);
 
+	//set page title
+	usePageTitle();
+
+	//filter click outside
 	const filterPopupRef = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -35,20 +40,23 @@ export default function SearchPage() {
 		};
 	}, []);
 
+	//search with url parameter
 	const { q } = useLoaderData() as Awaited<ReturnType<LoaderReturnType>>;
 	useEffect(() => {
 		if (q && q !== '') {
 			setSearchValue(q);
-			searchHandler();
+			searchHandler(q);
 		}
 	}, [q]);
-	const searchHandler = async (nextLink?: string) => {
+	const searchHandler = async (q: string | null, nextLink?: string) => {
 		setDisplayError(false);
 		setStatusMessage('loading...');
-		const searchString = searchValue === '' ? '*' : searchValue;
+		const searchString = q ?? '*';
 		getProteins(searchString, nextLink)
 			.then(({ result, headers }) => {
-				setPageCounter(pageCounter + 1);
+				if (nextLink) {
+					setPageCounter(pageCounter + 1);
+				}
 				setResultArr(result);
 				setTotalResults(
 					headers.find(([key]) => key === 'x-total-results')?.[1] || '0'
@@ -65,12 +73,9 @@ export default function SearchPage() {
 	return (
 		<>
 			<div className="min-h-[100vh] flex flex-col flex-nowrap">
-				<Header>
-					<p className={displayError ? `text-red-600` : ''}>{statusMessage}</p>
-				</Header>
 				<Form
 					className="flex items-center gap-4 pt-[78px] py-8 px-[10%]"
-					onSubmit={() => searchHandler()}
+					onSubmit={() => searchHandler(searchValue)}
 				>
 					<input
 						className="block flex-auto h-[48px] pl-4 rounded-xl border-2 border-slate-200"
@@ -79,7 +84,7 @@ export default function SearchPage() {
 						id="search"
 						placeholder="Enter search value"
 						onChange={(e) => setSearchValue(e.currentTarget.value)}
-						value={searchValue}
+						value={searchValue || ''}
 					/>
 					<button
 						type="submit"
@@ -212,7 +217,7 @@ export default function SearchPage() {
 							<span
 								className="cursor-pointer hover:underline text-blue-500"
 								onClick={() => {
-									searchHandler(link);
+									searchHandler(searchValue, link);
 								}}
 							>
 								Next page
@@ -228,6 +233,10 @@ export default function SearchPage() {
 					</div>
 				)}
 			</div>
+			<Outlet />
+			<Header>
+				<p className={displayError ? `text-red-600` : ''}>{statusMessage}</p>
+			</Header>
 		</>
 	);
 }

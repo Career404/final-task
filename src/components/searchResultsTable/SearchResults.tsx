@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import './SearchResults.css';
 
 export default function SearchResults({
@@ -11,10 +12,12 @@ export default function SearchResults({
 	total: string;
 	page: number;
 }) {
+	const navigate = useNavigate();
 	return (
 		<>
 			<p className="px-[10%] pb-4 text-xl font-semibold">
-				{total + ' '}Search Results for {q}
+				{total + ' '}
+				{q ? `Search Results for ${q}` : 'Total Proteins'}
 			</p>
 			<div className="h-[70vh] xl:mx-[10%] xl:w-[80%] overflow-auto ">
 				<table className="results-table">
@@ -39,8 +42,10 @@ export default function SearchResults({
 					<tbody>
 						{results.map((prot, index) => (
 							<tr
-								title={prot.proteinDescription.recommendedName.fullName.value}
+								className="cursor-pointer"
+								title={prot.proteinDescription.recommendedName?.fullName.value}
 								key={prot.uniProtkbId}
+								onClick={() => navigate(`./protein/${prot.primaryAccession}`)}
 							>
 								<td>{index + page * 25 - 24}</td>
 								<td>{prot.primaryAccession}</td>
