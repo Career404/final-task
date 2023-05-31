@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProtein } from 'src/api/uniprot';
 import Details from './Details';
+import Feature from './Feature';
 import './Protein.css';
 
 export function Protein() {
@@ -74,6 +75,7 @@ export function Protein() {
 						</div>
 						<div className="tabTargetWrapper">
 							{displayTab === 'Details' && <Details prot={prot} />}
+							{displayTab === 'Feature' && <Feature id={id!} />}
 						</div>
 					</div>
 				</>

@@ -308,3 +308,8 @@ interface CountByFeatureType {
 	'Natural variant': number;
 	'Sequence conflict': number;
 }
+
+declare module 'protvista-uniprot' {
+	const ProtVista: any;
+	export default ProtVista;
+}
