@@ -11,6 +11,7 @@ export default function Header({ children }: PropsWithChildren) {
 				<div className="flex items-center justify-end gap-12 h-[48px] text-[12px]">
 					{children}
 					<div className="font-semibold">{user?.email.toString()}</div>
+
 					<div
 						className="text-blue-500 cursor-pointer hover:scale-150 focus-visible:outline-black"
 						tabIndex={0}
