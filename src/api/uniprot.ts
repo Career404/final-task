@@ -27,3 +27,18 @@ export async function getProtein(id: string) {
 		throw { message: 'failed to make a server call', error };
 	}
 }
+export async function getProteinPublications(id: string) {
+	try {
+		const response = await fetch(
+			`https://rest.uniprot.org/uniprotkb/${id}/publications`
+		);
+		if (!response.ok) {
+			throw new Error('server error');
+		}
+		const headers = response.headers;
+		const result = await response.json();
+		return { result, headers };
+	} catch (error) {
+		throw { message: 'failed to make a server call', error };
+	}
+}

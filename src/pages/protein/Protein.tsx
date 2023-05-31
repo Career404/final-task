@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getProtein } from 'src/api/uniprot';
-import Details from './Details';
-import Feature from './Feature';
+import Details from '../../components/protein/Details';
+import Feature from 'src/components/protein/Feature';
 import './Protein.css';
+import Publications from 'src/components/protein/Publications';
 
 export function Protein() {
 	const { id } = useParams();
@@ -29,7 +30,7 @@ export function Protein() {
 							{prot.primaryAccession} / {prot.uniProtkbId}
 							{'  '}
 							<span
-								className="relative -top-1 py-2 px-4 bg-blue-100 rounded-3xl text-base font-normal"
+								className="cursor-help relative -top-1 py-2 px-4 bg-blue-100 rounded-3xl text-base font-normal"
 								title={prot.organism.commonName!}
 							>
 								{prot.organism.scientificName}
@@ -43,7 +44,7 @@ export function Protein() {
 					<div>
 						<div className="tabWrapper flex mt-4">
 							<div
-								className={`px-8 py-2 text-[16px] font-semibold hover:text-blue-800 ${
+								className={`cursor-pointer px-8 py-2 text-[16px] font-semibold hover:text-blue-800 ${
 									displayTab === 'Details'
 										? 'text-blue-600 border-b-2 border-blue-600'
 										: ''
@@ -53,7 +54,7 @@ export function Protein() {
 								Details
 							</div>
 							<div
-								className={`px-8 py-2 text-[16px] font-semibold hover:text-blue-800  ${
+								className={`cursor-pointer px-8 py-2 text-[16px] font-semibold hover:text-blue-800  ${
 									displayTab === 'Feature'
 										? 'text-blue-600 border-b-2 border-blue-600'
 										: ''
@@ -63,7 +64,7 @@ export function Protein() {
 								Feature Viewer
 							</div>
 							<div
-								className={`px-8 py-2 text-[16px] font-semibold hover:text-blue-800   ${
+								className={`cursor-pointer px-8 py-2 text-[16px] font-semibold hover:text-blue-800   ${
 									displayTab === 'Publications'
 										? 'text-blue-600 border-b-2 border-blue-600'
 										: ''
@@ -76,6 +77,7 @@ export function Protein() {
 						<div className="tabTargetWrapper">
 							{displayTab === 'Details' && <Details prot={prot} />}
 							{displayTab === 'Feature' && <Feature id={id!} />}
+							{displayTab === 'Publications' && <Publications id={id!} />}
 						</div>
 					</div>
 				</>

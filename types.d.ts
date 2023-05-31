@@ -309,6 +309,51 @@ interface CountByFeatureType {
 	'Sequence conflict': number;
 }
 
+interface Pubs {
+	citation: Citation;
+	references?: ReferencesEntity[] | null;
+	statistics: Statistics;
+}
+interface Citation {
+	id: string;
+	citationType: string;
+	authors?: string[] | null;
+	citationCrossReferences?: CitationCrossReferencesEntity[] | null;
+	title: string;
+	publicationDate: string;
+	journal: string;
+	firstPage: string;
+	lastPage: string;
+	volume: string;
+	completeAuthorList: boolean;
+	literatureAbstract: string;
+}
+interface CitationCrossReferencesEntity {
+	database: string;
+	id: string;
+}
+interface ReferencesEntity {
+	source: Source;
+	citationId: string;
+	sourceCategories?: string[] | null;
+	referenceComments?: ReferenceCommentsEntity[] | null;
+	referencePositions?: string[] | null;
+	referenceNumber: number;
+}
+interface Source {
+	name: string;
+}
+interface ReferenceCommentsEntity {
+	value: string;
+	type: string;
+}
+interface Statistics {
+	reviewedProteinCount: number;
+	unreviewedProteinCount: number;
+	computationallyMappedProteinCount: number;
+	communityMappedProteinCount: number;
+}
+
 declare module 'protvista-uniprot' {
 	const ProtVista: any;
 	export default ProtVista;
