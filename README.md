@@ -1,4 +1,6 @@
 # Status:
+Hosted on [Google Firebase](https://qs-final-auth.web.app)
+
 I would lie if I said I'm totally happy with my completion of this task, both in terms of functionality and code quality. Auth feature could be cleaner, endless scroll would be nice, and publications tab is way too hacky for my taste. The app works and is stable despite all that.
 
 * Base: Vite React app with TypeScript

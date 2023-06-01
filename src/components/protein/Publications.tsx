@@ -61,7 +61,7 @@ export default function Publications({ id }: { id: string }) {
 							{pub.citation.citationCrossReferences && (
 								<>
 									<div className="flex gap-8">
-										{pub.citation.citationCrossReferences.map((ref, index) => {
+										{pub.citation.citationCrossReferences.map((ref) => {
 											//! Bad
 											const hasDOI =
 												/* Boolean(pub.citation.citationCrossReferences?.find((ref)=>ref.database==='DOI')) */ pub
