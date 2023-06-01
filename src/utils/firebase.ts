@@ -16,3 +16,4 @@ export const initializeFirebaseApp = () => {
 initializeFirebaseApp();
 
 export const AUTH = getAuth();
+AUTH.useDeviceLanguage();

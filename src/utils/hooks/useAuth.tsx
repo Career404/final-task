@@ -2,6 +2,8 @@ import {
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
 	signOut,
+	signInWithPopup,
+	GoogleAuthProvider,
 } from 'firebase/auth';
 import { createContext, ReactElement, useContext, useMemo } from 'react';
 import { AUTH } from '../firebase';
@@ -19,6 +21,7 @@ interface AuthContextProps {
 	} | null;
 	signup: (data: User) => Promise<unknown>;
 	login: (data: User) => Promise<unknown>;
+	G_login: () => Promise<void>;
 	logout: () => Promise<unknown>;
 }
 
@@ -61,6 +64,19 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
 			throw JSON.stringify(err);
 		}
 	};
+	const G_login = async () => {
+		try {
+			const G_AUTH = new GoogleAuthProvider();
+			const credentials = await signInWithPopup(AUTH, G_AUTH);
+			const userData = {
+				email: credentials.user.email,
+				token: credentials.user.uid,
+			};
+			setUser(userData);
+		} catch (err) {
+			throw JSON.stringify(err);
+		}
+	};
 
 	const logout = async () => {
 		try {
@@ -75,6 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactElement }) => {
 			user,
 			signup,
 			login,
+			G_login,
 			logout,
 		}),
 		[user]

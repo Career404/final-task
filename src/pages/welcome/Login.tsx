@@ -2,11 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/utils/hooks/useAuth';
 
-/*
-if some of rules isn’t completed - app must show an error
-
-if login failed app shows appropriate message about the error.
-*/
+import googleSignInIcon from 'src/assets/btn_google_signin_light_normal_web.png';
 
 export default function Login() {
 	const [error, setError] = useState(false);
@@ -15,7 +11,7 @@ export default function Login() {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const navigate = useNavigate();
-	const { login } = useAuth();
+	const { login, G_login } = useAuth();
 	const handleSubmit = () => {
 		if (email !== '' && password !== '') {
 			login({ email, password })
@@ -80,6 +76,19 @@ export default function Login() {
 						Sign up
 					</Link>
 				</p>
+				<div className="m-4 flex justify-center">
+					<button
+						className="p-0 flex justify-center items-center"
+						onClick={G_login}
+					>
+						<img
+							className="cursor-pointer block active:"
+							src={googleSignInIcon}
+							alt="Google sign in icon"
+							draggable={false}
+						/>
+					</button>
+				</div>
 			</div>
 		</div>
 	);
